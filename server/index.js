@@ -8,11 +8,14 @@ import courseRoute from "./routes/course.route.js";
 import mediaRoute from "./routes/media.route.js";
 import purchaseRoute from "./routes/coursePurchase.route.js";
 import courseProgress from "./routes/courseprogress.route.js";
+import path from "path"
 
 
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+const DIRNAME = path.resolve();
 
 // default middleware
 app.use(express.json());
@@ -30,6 +33,12 @@ app.use("/api/v1/user", userRoute);
 app.use("/api/v1/course", courseRoute);
 app.use("/api/v1/purchase", purchaseRoute);
 app.use("/api/v1/course-progress", courseProgress);
+
+// serve static files from server
+app.use(express.static(path.join(DIRNAME,"/client/dist")));
+app.use("*",(_,res) => {
+    res.sendFile(path.resolve(DIRNAME, "client","dist","index.html"));
+})
 
 app.listen(PORT, () => {
   connectDB();
