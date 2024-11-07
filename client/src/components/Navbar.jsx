@@ -1,6 +1,5 @@
-import React, { useState } from "react";
-import { Input } from "./ui/input";
-import { LogOut, Search, Menu, Sun, Moon } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { LogOut, Menu, Sun, Moon, School } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
 import {
@@ -15,51 +14,53 @@ import {
 import DarkMode from "./DarkMode";
 import { Link, useNavigate } from "react-router-dom";
 import {
-  Sheet,
+  Sheet, 
   SheetContent,
+  SheetFooter,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
 } from "./ui/sheet";
 import { Separator } from "./ui/separator";
+import { useSelector } from "react-redux";
+import { toast } from "sonner";
+import { useLogoutUserMutation } from "@/api/authApi";
+import { useTheme } from "./ThemeProvider";
 
 const Navbar = () => {
-  const [searchText, setSearchText] = useState("");
+  const { user } = useSelector((store) => store.auth);
+  const [logoutUser, { data, isSuccess }] = useLogoutUserMutation();
   const navigate = useNavigate();
 
-  const onSubmitHandler = (e) => {
-    e.preventDefault();
-    alert(searchText);
+  const logoutHandler = async () => {
+    await logoutUser();
   };
-  const isLoggedIn = true;
-  const isAdmin = true;
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success(data.message);
+      navigate("/login");
+    }
+  }, [isSuccess]);
 
   return (
-    <div className="h-16 shadow-sm">
+    <div
+      className={`h-16 dark:bg-[#0A0A0A] bg-white border-b dark:border-b-gray-800 border-b-gray-200 fixed top-0 left-0 right-0 duration-300 z-10`}
+    >
       {/* Desktop Navbar */}
       <div className="max-w-7xl mx-auto hidden md:flex justify-between items-center gap-10 h-full">
-        <Link to="/">
-          <h1 className="hidden md:block font-extrabold text-2xl">E-Learning</h1>
+        <Link to="/" className="flex items-center gap-2">
+          <School size={"30"} />
+          <h1 className="hidden md:block font-extrabold text-2xl">
+            E-Learning
+          </h1>
         </Link>
-        <form
-          onSubmit={onSubmitHandler}
-          className="flex relative md:w-1/2 w-full"
-        >
-          <Input
-            type="text"
-            value={searchText}
-            onChange={(e) => setSearchText(e.target.value)}
-            placeholder="Search Courses"
-            className="px-10 w-full bg-[#F7F9FA] h-11 rounded-full"
-          />
-          <Search size={"20"} className="absolute inset-y-3 left-3 text-gray-500" />
-        </form>
         <div className="flex items-center gap-4">
-          {isLoggedIn ? (
+          {user ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Avatar>
-                  <AvatarImage src="https://github.com/shadcn.png" />
+                  <AvatarImage src={user?.photoUrl} />
                   <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
               </DropdownMenuTrigger>
@@ -72,16 +73,19 @@ const Navbar = () => {
                 <DropdownMenuItem onClick={() => navigate("/profile")}>
                   Edit Profile
                 </DropdownMenuItem>
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={logoutHandler}>
                   Log out
                   <DropdownMenuShortcut>
                     <LogOut size={"16"} />
                   </DropdownMenuShortcut>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                {isAdmin && (
+                {user?.role === "instructor" && (
                   <DropdownMenuItem>
-                    <Button onClick={()=> navigate("/admin/dashboard")} className="w-full mt-2 bg-purple-300 text-purple-700 hover:bg-purple-300">
+                    <Button
+                      onClick={() => navigate("/admin/dashboard")}
+                      className="w-full mt-2 bg-purple-300 text-purple-700 hover:bg-purple-300"
+                    >
                       Dashboard
                     </Button>
                   </DropdownMenuItem>
@@ -105,7 +109,7 @@ const Navbar = () => {
         <Link to="/">
           <h1 className="font-extrabold text-2xl">E-Learning</h1>
         </Link>
-        <MobileNavbar />
+        <MobileNavbar user={user} logoutHandler={logoutHandler} />
       </div>
     </div>
   );
@@ -113,13 +117,16 @@ const Navbar = () => {
 
 export default Navbar;
 
-const MobileNavbar = () => {
-  const [theme, setTheme] = useState("light");
-
+const MobileNavbar = ({ user, logoutHandler }) => {
+  const { setTheme } = useTheme();
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button size={"icon"} className="rounded-full bg-gray-200 text-black hover:bg-gray-200" variant="outline">
+        <Button
+          size={"icon"}
+          className="rounded-full bg-gray-200 text-black hover:bg-gray-200"
+          variant="outline"
+        >
           <Menu size={"18"} />
         </Button>
       </SheetTrigger>
@@ -148,8 +155,18 @@ const MobileNavbar = () => {
         <nav className="flex flex-col space-y-4">
           <Link to="/learning">My Learning</Link>
           <Link to="/profile">Edit Profile</Link>
-          <Link to="/">Log Out</Link>
+          <p onClick={logoutHandler}>Log Out</p>
         </nav>
+        <SheetFooter>
+          {user?.role === "instructor" && (
+            <Link to={"/admin/dashboard"}>
+             <Button className="w-full mt-2 bg-purple-300 text-purple-700 hover:bg-purple-300"
+              >
+                Dashboard
+              </Button>
+            </Link>
+          )}
+        </SheetFooter>
       </SheetContent>
     </Sheet>
   );
