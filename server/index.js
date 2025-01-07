@@ -14,7 +14,6 @@ dotenv.config({});
 // call database connection here
 connectDB();
 const app = express();
-
 const PORT = process.env.PORT || 3000;
 
 // default middleware

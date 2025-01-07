@@ -3,6 +3,8 @@ import { Course } from "../models/course.model.js";
 import { Lecture } from "../models/lecture.model.js";
 import {deleteMediaFromCloudinary, deleteVideoFromCloudinary, uploadMedia} from "../utils/cloudinary.js";
 
+
+//API for Create Course
 export const createCourse = async (req,res) => {
     try {
         const {courseTitle, category} = req.body;
@@ -30,6 +32,7 @@ export const createCourse = async (req,res) => {
     }
 }
 
+//API for Serach Course
 export const searchCourse = async (req,res) => {
     try {
         const {query = "", categories = [], sortByPrice =""} = req.query;
@@ -71,6 +74,7 @@ export const searchCourse = async (req,res) => {
     }
 }
 
+
 export const getPublishedCourse = async (_,res) => {
     try {
         const courses = await Course.find({isPublished:true}).populate({path:"creator", select:"name photoUrl"});
@@ -89,6 +93,7 @@ export const getPublishedCourse = async (_,res) => {
         })
     }
 }
+
 export const getCreatorCourses = async (req,res) => {
     try {
         const userId = req.id;
@@ -109,6 +114,8 @@ export const getCreatorCourses = async (req,res) => {
         })
     }
 }
+
+//API for Edit Coures
 export const editCourse = async (req,res) => {
     try {
         const courseId = req.params.courseId;
@@ -148,6 +155,8 @@ export const editCourse = async (req,res) => {
         })
     }
 }
+
+//API for get course by ID
 export const getCourseById = async (req,res) => {
     try {
         const {courseId} = req.params;
@@ -170,6 +179,7 @@ export const getCourseById = async (req,res) => {
     }
 }
 
+//API for Create Lecture 
 export const createLecture = async (req,res) => {
     try {
         const {lectureTitle} = req.body;
@@ -202,6 +212,8 @@ export const createLecture = async (req,res) => {
         })
     }
 }
+
+//API for Get Course Lecture 
 export const getCourseLecture = async (req,res) => {
     try {
         const {courseId} = req.params;
@@ -222,6 +234,7 @@ export const getCourseLecture = async (req,res) => {
         })
     }
 }
+//API to edit Lectures
 export const editLecture = async (req,res) => {
     try {
         const {lectureTitle, videoInfo, isPreviewFree} = req.body;
@@ -259,6 +272,8 @@ export const editLecture = async (req,res) => {
         })
     }
 }
+
+//API to remove lecture from Course
 export const removeLecture = async (req,res) => {
     try {
         const {lectureId} = req.params;
@@ -289,6 +304,8 @@ export const removeLecture = async (req,res) => {
         })
     }
 }
+
+//API to get Lecture by ID
 export const getLectureById = async (req,res) => {
     try {
         const {lectureId} = req.params;
@@ -310,8 +327,7 @@ export const getLectureById = async (req,res) => {
 }
 
 
-// publich unpublish course logic
-
+//API -  publich unpublish course logic
 export const togglePublishCourse = async (req,res) => {
     try {
         const {courseId} = req.params;
