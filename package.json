@@ -1,12 +1,13 @@
 {
-  "name": "lms",
+  "name": "server",
   "version": "1.0.0",
   "main": "index.js",
   "type": "module",
   "scripts": {
     "dev": "nodemon server/index.js",
-    "build": "npm install && npm install --prefix client && npm run build --prefix client",
-    "start": "nodemon server/index.js"
+    "build":"npm install && npm install --prefix client && npm run build --prefix client",
+    "start":"nodemon server/index.js"
+    
   },
   "keywords": [],
   "author": "",
