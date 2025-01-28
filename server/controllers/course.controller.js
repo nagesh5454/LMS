@@ -75,6 +75,7 @@ export const searchCourse = async (req,res) => {
 }
 
 
+// API for getPublishedCourse
 export const getPublishedCourse = async (_,res) => {
     try {
         const courses = await Course.find({isPublished:true}).populate({path:"creator", select:"name photoUrl"});
@@ -94,6 +95,8 @@ export const getPublishedCourse = async (_,res) => {
     }
 }
 
+
+// API for getCreatorCourses
 export const getCreatorCourses = async (req,res) => {
     try {
         const userId = req.id;
