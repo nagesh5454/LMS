@@ -3,6 +3,8 @@ import bcrypt from "bcryptjs";
 import { generateToken } from "../utils/generateToken.js";
 import { deleteMediaFromCloudinary, uploadMedia } from "../utils/cloudinary.js";
 
+
+//API for register the user
 export const register = async (req,res) => {
     try {
        
@@ -38,6 +40,8 @@ export const register = async (req,res) => {
         })
     }
 }
+
+//API for login the user
 export const login = async (req,res) => {
     try {
         const {email, password} = req.body;
@@ -71,6 +75,8 @@ export const login = async (req,res) => {
         })
     }
 }
+
+//API for logout the user
 export const logout = async (_,res) => {
     try {
         return res.status(200).cookie("token", "", {maxAge:0}).json({
@@ -85,6 +91,8 @@ export const logout = async (_,res) => {
         }) 
     }
 }
+
+//API for getUserProfile 
 export const getUserProfile = async (req,res) => {
     try {
         const userId = req.id;
@@ -107,6 +115,8 @@ export const getUserProfile = async (req,res) => {
         })
     }
 }
+
+//API for updatePrfile 
 export const updateProfile = async (req,res) => {
     try {
         const userId = req.id;

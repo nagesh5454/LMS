@@ -6,6 +6,8 @@ import { User } from "../models/user.model.js";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
+
+// API for createCheckoutSession
 export const createCheckoutSession = async (req, res) => {
   try {
     const userId = req.id;
@@ -69,6 +71,8 @@ export const createCheckoutSession = async (req, res) => {
   }
 };
 
+
+// API for stripeWebhook
 export const stripeWebhook = async (req, res) => {
   let event;
 
@@ -137,6 +141,8 @@ export const stripeWebhook = async (req, res) => {
   }
   res.status(200).send();
 };
+
+// API for getCourseDetailWithPurchaseStatus
 export const getCourseDetailWithPurchaseStatus = async (req, res) => {
   try {
     const { courseId } = req.params;
@@ -162,6 +168,7 @@ export const getCourseDetailWithPurchaseStatus = async (req, res) => {
   }
 };
 
+// API for getAllPurchasedCourse
 export const getAllPurchasedCourse = async (_, res) => {
   try {
     const purchasedCourse = await CoursePurchase.find({

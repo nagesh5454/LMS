@@ -1,6 +1,8 @@
 import { CourseProgress } from "../models/courseProgress.js";
 import { Course } from "../models/course.model.js";
 
+
+//API for getCourseProgress
 export const getCourseProgress = async (req, res) => {
   try {
     const { courseId } = req.params;
@@ -44,6 +46,8 @@ export const getCourseProgress = async (req, res) => {
   }
 };
 
+
+//API for updateLectureProgress
 export const updateLectureProgress = async (req, res) => {
   try {
     const { courseId, lectureId } = req.params;
@@ -98,6 +102,8 @@ export const updateLectureProgress = async (req, res) => {
   }
 };
 
+
+//API for markAsCompleted
 export const markAsCompleted = async (req, res) => {
   try {
     const { courseId } = req.params;
@@ -118,6 +124,8 @@ export const markAsCompleted = async (req, res) => {
   }
 };
 
+
+//API for markAsInCompleted
 export const markAsInCompleted = async (req, res) => {
     try {
       const { courseId } = req.params;
