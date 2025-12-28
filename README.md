@@ -55,4 +55,4 @@ Ensure you have the following installed:
 ### **Steps**
 1. Clone the repository:
    ```bash
-   git clone https://github.com/nagesh5454/LearningManagementSystem.git
+   git clone git@github.com:nagesh5454/LMS.git
