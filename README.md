@@ -55,4 +55,4 @@ Ensure you have the following installed:
 ### **Steps**
 1. Clone the repository:
    ```bash
-   git clone git@github.com:nagesh5454/LMS.git
+   git clone https://github.com/nagesh5454/LMS.git
